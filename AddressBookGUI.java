@@ -1,10 +1,3 @@
-package GUI;
-
-import AddressBook.AddressBook;
-import AddressBook.AddressBookController;
-import AddressBook.FileSystem;
-import AddressBook.Person;
-
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;

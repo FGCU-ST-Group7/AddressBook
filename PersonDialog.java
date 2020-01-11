@@ -1,6 +1,3 @@
-package GUI;
-
-import AddressBook.Person;
 import com.sun.istack.internal.Nullable;
 
 import javax.swing.*;
@@ -80,7 +77,7 @@ public class PersonDialog extends JDialog {
         p.get().add(phone);
 
         
-        SpringUtilities.makeCompactGrid(p.get(), 7, 2, 6, 6, 6, 6);
+        GUI.SpringUtilities.makeCompactGrid(p.get(), 7, 2, 6, 6, 6, 6);
 
         // Set up the buttons
         JPanel buttons = new JPanel();
