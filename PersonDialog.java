@@ -1,5 +1,5 @@
-import com.sun.istack.internal.Nullable;
 
+import com.beust.jcommander.internal.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.util.concurrent.atomic.AtomicReference;

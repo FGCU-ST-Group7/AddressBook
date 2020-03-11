@@ -49,8 +49,8 @@ public class AddressBook extends AbstractTableModel {
         }
         fireTableRowsDeleted(0, persons.size() - 1);
         persons.clear();
+        // n0 -> (person
     }
-
   
     @Override
     public int getRowCount() {
