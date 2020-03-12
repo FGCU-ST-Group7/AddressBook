@@ -1,7 +1,7 @@
 
-import org.junit.Test;
-import org.junit.Before;
-import org.junit.After;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 import org.testng.Assert;
 
 /**
@@ -13,15 +13,21 @@ import org.testng.Assert;
  */
 public class PersonTest {
 
-  private final Person person = new Person("Johnny", "Appleseed", "555 AppleTree Road",
-      "Bonita Springs", "FL", "33908", "(239) 999-9999");
+  private Person person1;
+  private Person person2;
 
-  @Before
+  @BeforeEach
   public void before() throws Exception {
+    person1 = new Person("Johnny", "Appleseed", "555 AppleTree Road",
+        "Bonita Springs", "FL", "33908", "(239) 999-9999");
+
+    person2 = new Person("test", "test", "", "", "", "", "");
   }
 
-  @After
+  @AfterEach
   public void after() throws Exception {
+    person1 = null;
+    person2 = null;
   }
 
   /**
@@ -30,7 +36,12 @@ public class PersonTest {
   @Test
   public void testGetFirstName() throws Exception {
 //TODO: Test goes here...
-    Assert.assertEquals(person.getFirstName(), "Johnny");
+    Assert.assertEquals("Johnny", person1.getFirstName());
+    Assert.assertThrows(IllegalArgumentException.class, () -> {
+      Person person3 = new Person("test", "test", "", "", "", "", "");
+      Person person4 = new Person("", "test", "", "", "", "", "");
+      Person person5 = new Person(null, "test", "", "", "", "", "");
+    });
   }
 
   /**
@@ -39,7 +50,11 @@ public class PersonTest {
   @Test
   public void testGetLastName() throws Exception {
 //TODO: Test goes here...
-    Assert.assertEquals(person.getLastName(), "Appleseed");
+    Assert.assertEquals("Appleseed", person1.getLastName());
+    Assert.assertThrows(IllegalArgumentException.class, () -> {
+      Person person3 = new Person("test", "", "", "", "", "", "");
+      Person person4 = new Person("test", null, "", "", "", "", "");
+    });
   }
 
   /**
@@ -48,7 +63,8 @@ public class PersonTest {
   @Test
   public void testGetAddress() throws Exception {
 //TODO: Test goes here...
-    Assert.assertEquals(person.getAddress(), "555 AppleTree Road");
+    Assert.assertEquals("555 AppleTree Road", person1.getAddress());
+
   }
 
   /**
@@ -57,7 +73,8 @@ public class PersonTest {
   @Test
   public void testGetCity() throws Exception {
 //TODO: Test goes here...
-    Assert.assertEquals(person.getCity(), "Bonita Springs");
+    Assert.assertEquals("Bonita Springs", person1.getCity());
+
   }
 
   /**
@@ -66,7 +83,8 @@ public class PersonTest {
   @Test
   public void testGetState() throws Exception {
 //TODO: Test goes here...
-    Assert.assertEquals(person.getState(), "FL");
+    Assert.assertEquals("FL", person1.getState());
+
   }
 
   /**
@@ -75,7 +93,8 @@ public class PersonTest {
   @Test
   public void testGetZip() throws Exception {
 //TODO: Test goes here...
-    Assert.assertEquals(person.getZip(), "33908");
+    Assert.assertEquals("33908", person1.getZip());
+
   }
 
   /**
@@ -84,7 +103,8 @@ public class PersonTest {
   @Test
   public void testGetPhone() throws Exception {
 //TODO: Test goes here...
-    Assert.assertEquals(person.getPhone(), "(239) 999-9999");
+    Assert.assertEquals("(239) 999-9999", person1.getPhone());
+
   }
 
   /**
@@ -93,7 +113,7 @@ public class PersonTest {
   @Test
   public void testToString() throws Exception {
 //TODO: Test goes here...
-    Assert.assertEquals(person.toString(), "Appleseed, Johnny");
+    Assert.assertEquals("Appleseed, Johnny", person1.toString());
   }
 
   /**
@@ -102,13 +122,13 @@ public class PersonTest {
   @Test
   public void testContainsString() throws Exception {
 //TODO: Test goes here...
-    Assert.assertTrue(person.containsString("Apple"));
-    Assert.assertTrue(person.containsString("Johnny"));
-    Assert.assertTrue(person.containsString("Appletree"));
-    Assert.assertTrue(person.containsString("Bonita"));
-    Assert.assertTrue(person.containsString("339"));
-    Assert.assertTrue(person.containsString("F"));
-    Assert.assertTrue(person.containsString("999"));
+    Assert.assertTrue(person1.containsString("Apple"));
+    Assert.assertTrue(person1.containsString("Johnny"));
+    Assert.assertTrue(person1.containsString("Appletree"));
+    Assert.assertTrue(person1.containsString("Bonita"));
+    Assert.assertTrue(person1.containsString("339"));
+    Assert.assertTrue(person1.containsString("F"));
+    Assert.assertTrue(person1.containsString("(239) 999-9999"));
   }
 
   /**
@@ -117,6 +137,15 @@ public class PersonTest {
   @Test
   public void testGetField() throws Exception {
 //TODO: Test goes here...
-    Assert.assertEquals(person.getField(0), "Appleseed");
+    Assert.assertEquals("Appleseed", person1.getField(0));
+    Assert.assertEquals("Johnny", person1.getField(1));
+    Assert.assertEquals("555 AppleTree Road", person1.getField(2));
+    Assert.assertEquals("Bonita Springs", person1.getField(3));
+    Assert.assertEquals("FL", person1.getField(4));
+    Assert.assertEquals("33908", person1.getField(5));
+    Assert.assertEquals("(239) 999-9999", person1.getField(6));
+    Assert.assertThrows(IllegalArgumentException.class, () -> {
+      person1.getField(7);
+    });
   }
 } 
