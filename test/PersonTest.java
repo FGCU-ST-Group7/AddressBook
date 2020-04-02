@@ -18,7 +18,7 @@ public class PersonTest {
   private Person person2;
 
   @BeforeEach
-  public void before() throws Exception {
+  public void steUp() throws Exception {
     // Initialize fields used for testing
     person1 = new Person("Johnny", "Appleseed", "555 AppleTree Road",
         "Bonita Springs", "FL", "33908", "(239) 999-9999");
@@ -27,7 +27,7 @@ public class PersonTest {
   }
 
   @AfterEach
-  public void after() throws Exception {
+  public void teardown() throws Exception {
     // Set all fields to null after each test
     person1 = null;
     person2 = null;
