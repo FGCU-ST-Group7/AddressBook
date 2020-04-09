@@ -23,7 +23,7 @@ class AddressBookControllerTest {
   // In Mockito, mocks can be represented for stub and driver
   @Mock
   private AddressBook addressBook;
-  @Mock
+
   private Person person;
 
   // The class under testing
@@ -31,14 +31,16 @@ class AddressBookControllerTest {
   private AddressBookController underTest;
 
   @BeforeEach
-  public void setUp(){
+  public void setUp() {
     addressBook = mock(AddressBook.class);
-    person = mock(Person.class);
+    person = new Person("Johnny", "Appleseed", "555 AppleTree Road",
+        "Bonita Springs", "FL", "33908", "(239) 999-9999");
+
     underTest = new AddressBookController(addressBook);
   }
 
   @AfterEach
-  public void tearDown(){
+  public void tearDown() {
     addressBook = null;
     person = null;
     underTest = null;
@@ -60,7 +62,9 @@ class AddressBookControllerTest {
   @Test
   void set() {
     // TODO: Under construction at the moment
-    Person person2 = mock(Person.class);
+    Person person2 = new Person("Johnny", "Appleseed", "555 AppleTree Road",
+        "Bonita Springs", "FL", "33908", "(239) 999-9999");
+
     underTest.add(person);
     underTest.add(person2);
   }
@@ -72,7 +76,7 @@ class AddressBookControllerTest {
     when(addressBook.getPersons()).thenReturn(new Person[]{});
     // call the method under testing
     underTest.remove(0);
-    // check and compare the size of the AndressBookController's addressBook
+    // check and compare the size of the AddressBookController's addressBook
     Assert.assertEquals(0, underTest.getModel().getPersons().length);
     // check and verify that the addressBook function remove was called at least once
     verify(addressBook, atLeastOnce()).remove(0);
@@ -80,6 +84,10 @@ class AddressBookControllerTest {
 
   @Test
   void get() {
+    when(addressBook.get(0)).thenReturn(person);
+    Assert.assertEquals(person, underTest.get(0));
+
+    verify(addressBook, atLeastOnce()).get(0);
   }
 
   @Test

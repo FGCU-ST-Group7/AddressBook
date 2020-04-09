@@ -1,7 +1,10 @@
 
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.BeforeEach;
+
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.testng.Assert;
 
 /**
@@ -14,8 +17,12 @@ import org.testng.Assert;
 public class PersonTest {
 
   // create Field used for testing Person class
+  @InjectMocks
   private Person person1;
   private Person person2;
+
+  @Mock
+  private AddressBook mockAddressBook;
 
   @BeforeEach
   public void steUp() throws Exception {

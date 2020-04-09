@@ -3,14 +3,13 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import org.junit.jupiter.api.extension.ExtendWith;
-
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.event.EventListenerList;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -32,11 +31,16 @@ public class AddressBookTest {
   @InjectMocks
   private AddressBook testAddressBook;
 
+  @Mock
+  private AddressBookController mockAddressBookController;
+
   private List<Person> persons;
   @Mock
   private Person mockPerson1;
   @Mock
   private Person mockPerson2;
+
+  private Person realPerson1;
   @Mock
   private EventListenerList listenerList;
 
@@ -50,9 +54,14 @@ public class AddressBookTest {
 //
 //    mockPerson2 = new Person("test2", "test2", "", "", "", "", "");
 
+    mockAddressBookController = mock(AddressBookController.class);
     testAddressBook = new AddressBook();
     mockPerson1 = mock(Person.class);
     mockPerson2 = mock(Person.class);
+
+    realPerson1 = new Person("Johnny", "Appleseed", "555 AppleTree Road",
+        "Bonita Springs", "FL", "33908", "(239) 999-9999");
+
     // add people into the addressBook
 
   }
@@ -87,10 +96,14 @@ public class AddressBookTest {
   @Test
   public void testAdd() {
 //TODO: Test goes here...
+    when(mockAddressBookController.get(0)).thenReturn(realPerson1);
+
+    mockAddressBookController.add(realPerson1);
     // add a person to addressBook
-    testAddressBook.add(mockPerson1);
+//    testAddressBook.add(mockPerson1);
     // Test to see if the address book has the testPerson1 entry
-    Assert.assertEquals(mockPerson1, testAddressBook.get(0));
+    Assert.assertEquals(realPerson1, mockAddressBookController.get(0));
+    verify(mockAddressBookController, atLeastOnce()).get(0);
   }
 
   /**
