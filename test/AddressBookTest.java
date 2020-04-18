@@ -1,18 +1,8 @@
-import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.event.EventListenerList;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.testng.Assert;
 
 /**
@@ -21,104 +11,64 @@ import org.testng.Assert;
  * @author <Authors Allen Telson>
  * @version 1.0
  * @since <pre>Feb 8, 2020</pre>
- *
- * This testing class uses a Person stub when testing
  */
-@ExtendWith(MockitoExtension.class)
 public class AddressBookTest {
 
   // Fields used to test AddressBook class
-  @InjectMocks
-  private AddressBook testAddressBook;
+  private AddressBook underTest;
 
-  @Mock
-  private AddressBookController mockAddressBookController;
-
-  private List<Person> persons;
-  @Mock
-  private Person mockPerson1;
-  @Mock
-  private Person mockPerson2;
-
-  private Person realPerson1;
-  @Mock
-  private EventListenerList listenerList;
+  private Person person1;
+  private Person person2;
 
 
   @BeforeEach
-  public void setUp() throws Exception {
-    // Initialize all fields
+  public void setUp() {
 
-//        mockPerson1 = new Person("Johnny", "Appleseed", "555 AppleTree Road",
-////        "Bonita Springs", "FL", "33908", "(239) 999-9999");
-//
-//    mockPerson2 = new Person("test2", "test2", "", "", "", "", "");
+    underTest = new AddressBook();
 
-    mockAddressBookController = mock(AddressBookController.class);
-    testAddressBook = new AddressBook();
-    mockPerson1 = mock(Person.class);
-    mockPerson2 = mock(Person.class);
-
-    realPerson1 = new Person("Johnny", "Appleseed", "555 AppleTree Road",
+    person1 = new Person("Johnny", "Appleseed", "555 AppleTree Road",
         "Bonita Springs", "FL", "33908", "(239) 999-9999");
 
-    // add people into the addressBook
-
+    person2 = new Person("Johnny", "Appleseed", "555 AppleTree Road",
+        "Bonita Springs", "FL", "33908", "(239) 999-9999");
   }
 
   @AfterEach
-  public void teardown() throws Exception {
+  public void teardown() {
     // set all fields to null after each test
-    mockPerson1 = null;
-    mockPerson2 = null;
-    testAddressBook = null;
+    underTest = null;
+    person1 = null;
+    person2 = null;
   }
 
-  /**
-   * Method: getPersons()
-   * Uses
-   */
   @Test
   public void testGetPersons() {
-//TODO: Test goes here...
-    // add two mocks to the addressBook
-    testAddressBook.add(mockPerson1);
-    testAddressBook.add(mockPerson2);
-    // Declare and initialize an array that holds two people
-    Person[] people = new Person[]{mockPerson1, mockPerson2};
-    // Test to see if the addressBook holds the same people as the people Array
-    Assert.assertEquals(testAddressBook.getPersons(), people);
+    // add two people into the addressBook under test
+    underTest.add(person1);
+    underTest.add(person2);
+
+    // check to see if the getPersons() function returns a list of persons
+    Assert.assertEquals(underTest.getPersons(), new Person[]{person1, person2});
   }
 
-  /**
-   * Method: add(Person p)
-   */
   @Test
-  public void testAdd() {
-//TODO: Test goes here...
-    when(mockAddressBookController.get(0)).thenReturn(realPerson1);
-
-    mockAddressBookController.add(realPerson1);
-    // add a person to addressBook
-//    testAddressBook.add(mockPerson1);
-    // Test to see if the address book has the testPerson1 entry
-    Assert.assertEquals(realPerson1, mockAddressBookController.get(0));
-    verify(mockAddressBookController, atLeastOnce()).get(0);
+  void add() {
+    // add person to addressBook
+    underTest.add(person1);
+    // check if object returned from AddressBook is person1 that was just added
+    Assert.assertEquals(underTest.get(0), person1);
   }
 
-  /**
-   * Method: set(int index, Person person)
-   */
-  @Test
-  public void testSet() {
-//TODO: Test goes here...
-    testAddressBook.add(mockPerson1);
-    testAddressBook.add(mockPerson2);
-    // Set the first person on the addressBook as the second person in the addressBook
-    testAddressBook.set(0, mockPerson2);
-    // Check to see if testPerson2 is the first person in the addressBook
-    Assert.assertEquals(testAddressBook.get(0), mockPerson2);
 
+  @Test
+  void set() {
+    // add two people in the addressBook
+    underTest.add(person1);
+    underTest.add(person2);
+    // move person 2 to the first position
+    underTest.set(0, person2);
+    // check to make sure the first person in the list is person 2
+    Assert.assertEquals(underTest.get(0), person2);
   }
 
   /**
@@ -126,19 +76,18 @@ public class AddressBookTest {
    */
   @Test
   public void testRemove() {
-//TODO: Test goes here...
     // initialize the persons arrayList
-    persons = new ArrayList<>();
+    List<Person> persons = new ArrayList<>();
     // Add testPerson2 into persons
-    persons.add(mockPerson2);
+    persons.add(person2);
     // remove the first contact within the addressBook
-    testAddressBook.add(mockPerson1);
-    testAddressBook.add(mockPerson2);
+    underTest.add(person1);
+    underTest.add(person2);
 
-    testAddressBook.remove(0);
+    underTest.remove(0);
     // Test to see if the persons array is the same as the addressBook in terms of
     // existing entries
-    Assert.assertEquals(persons.toArray(), testAddressBook.getPersons());
+    Assert.assertEquals(persons.toArray(), underTest.getPersons());
   }
 
   /**
@@ -146,11 +95,11 @@ public class AddressBookTest {
    */
   @Test
   public void testGet() {
-//TODO: Test goes here...
-    testAddressBook.add(mockPerson1);
-    testAddressBook.add(mockPerson2);
+    // add two people to the addressBook
+    underTest.add(person1);
+    underTest.add(person2);
     // Test to see if the addressBook returns testPerson1
-    Assert.assertEquals(mockPerson2, testAddressBook.get(1));
+    Assert.assertEquals(person2, underTest.get(1));
   }
 
   /**
@@ -158,14 +107,14 @@ public class AddressBookTest {
    */
   @Test
   public void testClear() {
-//TODO: Test goes here...
-    testAddressBook.add(mockPerson1);
+    // add a person to the addressBook
+    underTest.add(person1);
     // Clear the addressBook
-    testAddressBook.clear();
+    underTest.clear();
     // Clear the addressBook again to test clearing an already empty addressBook
-    testAddressBook.clear();
+    underTest.clear();
     // Test to see if the addressBook is indeed empty
-    Assert.assertEquals(0, testAddressBook.getPersons().length);
+    Assert.assertEquals(0, underTest.getPersons().length);
   }
 
   /**
@@ -173,11 +122,11 @@ public class AddressBookTest {
    */
   @Test
   public void testGetRowCount() {
-//TODO: Test goes here...
-    testAddressBook.add(mockPerson1);
-    testAddressBook.add(mockPerson2);
+    // add two to the addressBook
+    underTest.add(person1);
+    underTest.add(person2);
     // Test to see if the addressBook returns the correct amount of entries
-    Assert.assertEquals(2, testAddressBook.getRowCount());
+    Assert.assertEquals(2, underTest.getRowCount());
   }
 
   /**
@@ -185,27 +134,18 @@ public class AddressBookTest {
    */
   @Test
   public void testGetColumnCount() {
-//TODO: Test goes here...
-    testAddressBook.add(mockPerson2);
+    // add a person to the addressBook
+    underTest.add(person2);
     // Test to see if the addressBook returns the correct number of fields in a contact
-    Assert.assertEquals(7, testAddressBook.getColumnCount());
+    Assert.assertEquals(7, underTest.getColumnCount());
   }
 
-  /**
-   * Method: getValueAt(int row, int column)
-   */
   @Test
-  public void testGetValueAt() {
-//TODO: Test goes here...
-    testAddressBook.add(mockPerson1);
-    // when the getField functions with 4 being passed in as an argument is called, return the
-    // String "test"
-    when(mockPerson1.getField(4)).thenReturn("test");
-    // Test to see if the value returned for a specific field in a person entry within an
-    // addressBook is valid
-    Assert.assertEquals("test",testAddressBook.getValueAt(0, 4));
-    // verify that the getField function was called at least once.
-    verify(mockPerson1, atLeastOnce()).getField(4);
+  void testGetValueAt() {
+    // add a person to the addressBook
+    underTest.add(person1);
+    // test method to make sure proper String is returned
+    Assert.assertEquals("FL", underTest.getValueAt(0, 4));
   }
 
   /**
@@ -213,9 +153,9 @@ public class AddressBookTest {
    */
   @Test
   public void testGetColumnName() {
-//TODO: Test goes here...
-    testAddressBook.add(mockPerson1);
+    // add a person to the addressBook
+    underTest.add(person1);
     // Test to see if the name of a field is returned for a specific field in the addressBook
-    Assert.assertEquals("Address", testAddressBook.getColumnName(2));
+    Assert.assertEquals("Address", underTest.getColumnName(2));
   }
 }

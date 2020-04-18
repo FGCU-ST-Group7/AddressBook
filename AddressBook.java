@@ -8,7 +8,7 @@ public class AddressBook extends AbstractTableModel {
 
    
     public Person[] getPersons() {
-        return persons.toArray(new Person[persons.size()]);
+        return persons.toArray(new Person[0]);
     }
 
   
@@ -49,7 +49,6 @@ public class AddressBook extends AbstractTableModel {
         }
         fireTableRowsDeleted(0, persons.size() - 1);
         persons.clear();
-        // n0 -> (person
     }
   
     @Override

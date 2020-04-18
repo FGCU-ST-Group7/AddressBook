@@ -7,7 +7,7 @@ import java.sql.SQLException;
  * Created by 
  */
 public class AddressBookController {
-    AddressBook addressBook;
+    private AddressBook addressBook;
 
     public AddressBookController(AddressBook addressBook) {
         this.addressBook = addressBook;

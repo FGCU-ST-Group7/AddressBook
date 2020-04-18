@@ -1,15 +1,10 @@
-import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.sql.SQLException;
+import java.util.Arrays;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.testng.Assert;
 
 /***
@@ -17,46 +12,49 @@ import org.testng.Assert;
  * AddressBook and Person class as stubs in order to test
  * the add and remove functions.
  */
-@ExtendWith(MockitoExtension.class)
 class AddressBookControllerTest {
 
-  // In Mockito, mocks can be represented for stub and driver
-  @Mock
+  private AddressBookController addressBookController;
+
   private AddressBook addressBook;
 
   private Person person;
+  private Person dbPerson1;
+  private Person dbPerson2;
 
-  // The class under testing
-  @InjectMocks
-  private AddressBookController underTest;
+  private File file;
+
 
   @BeforeEach
   public void setUp() {
-    addressBook = mock(AddressBook.class);
     person = new Person("Johnny", "Appleseed", "555 AppleTree Road",
         "Bonita Springs", "FL", "33908", "(239) 999-9999");
 
-    underTest = new AddressBookController(addressBook);
+    dbPerson1 = new Person("Test", "Test", "Test", "Test",
+        "FL", "33976", "(239)-999-9999");
+    dbPerson2 = new Person("Stacy", "Campbell",
+        "347 Eagle Drive", "Miami", "FL", "33301", "(305)-999-9999");
+
+    addressBook = new AddressBook();
+    addressBook.add(person);
+
+    addressBookController = new AddressBookController(addressBook);
+
+    file = new File("$TEST");
+
   }
 
   @AfterEach
   public void tearDown() {
+    addressBookController = null;
     addressBook = null;
     person = null;
-    underTest = null;
+    file = null;
   }
 
   @Test
   void add() {
-    // when the getPersons function gets called from the mock, return
-    // a list containing the mockPerson
-    when(addressBook.getPersons()).thenReturn(new Person[]{person});
-    // call the method under test
-    underTest.add(person);
-    // after adding a person, check and compare the size of the addressBook
-    Assert.assertEquals(1, underTest.getModel().getPersons().length);
-    // check to verify that the function within the addressBook mock was called
-    verify(addressBook, atLeastOnce()).add(person);
+    Assert.assertEquals(person, addressBookController.get(0));
   }
 
   @Test
@@ -65,44 +63,56 @@ class AddressBookControllerTest {
     Person person2 = new Person("Johnny", "Appleseed", "555 AppleTree Road",
         "Bonita Springs", "FL", "33908", "(239) 999-9999");
 
-    underTest.add(person);
-    underTest.add(person2);
+    addressBookController.add(person2);
+    addressBookController.set(0, person2);
+
+    Assert.assertEquals(person2, addressBookController.get(0));
   }
 
   @Test
   void remove() {
-    // when the addressBook getPerson function gets called, return an
-    // empty list of Person type array.
-    when(addressBook.getPersons()).thenReturn(new Person[]{});
-    // call the method under testing
-    underTest.remove(0);
-    // check and compare the size of the AddressBookController's addressBook
-    Assert.assertEquals(0, underTest.getModel().getPersons().length);
-    // check and verify that the addressBook function remove was called at least once
-    verify(addressBook, atLeastOnce()).remove(0);
+    addressBookController.remove(0);
+    Assert.assertEquals(addressBookController.getModel().getPersons().length, 0);
   }
+
 
   @Test
   void get() {
-    when(addressBook.get(0)).thenReturn(person);
-    Assert.assertEquals(person, underTest.get(0));
-
-    verify(addressBook, atLeastOnce()).get(0);
+    Assert.assertEquals(person, addressBookController.get(0));
   }
+
 
   @Test
   void clear() {
+    addressBookController.clear();
+    Assert.assertEquals(addressBookController.getModel().getPersons().length, 0);
   }
 
   @Test
-  void open() {
+  void open() throws FileNotFoundException, SQLException {
+    addressBookController.open(file);
+    AddressBook addressBook1 = new AddressBook();
+    addressBook1.add(dbPerson1);
+    addressBook1.add(dbPerson2);
+    Assert.assertEquals(Arrays.toString(addressBook.getPersons()),
+        Arrays.toString(addressBook1.getPersons()));
   }
 
   @Test
-  void save() {
+  void save() throws SQLException, FileNotFoundException {
+    addressBook = new AddressBook();
+    addressBook.add(dbPerson1);
+    addressBook.add(dbPerson2);
+    addressBookController.save(file);
+
+    addressBookController.open(file);
+
+    Assert.assertEquals(Arrays.toString(addressBook.getPersons()),
+        Arrays.toString(new Person[]{dbPerson1, dbPerson2}));
   }
 
   @Test
   void getModel() {
+    Assert.assertEquals(addressBook, addressBookController.getModel());
   }
 }
