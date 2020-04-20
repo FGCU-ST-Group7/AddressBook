@@ -1,3 +1,4 @@
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,6 +21,14 @@ public class PersonTest {
   // create Field used for testing Person class
   private Person person1;
 
+  private Pattern numberPattern;
+  private Pattern phoneNumberPattern;
+  private Pattern namePattern;
+
+  private String NUM_REGEX = "^\\d+$";
+  private String PHONE_REGEX = "((\\(\\d{3}\\) ?)|(\\d{3}-))?\\d{3}-\\d{4}";
+  private String NAME_REGEX = "^[a-zA-Z]+(([',\\- ][a-zA-Z ])?[a-zA-Z]*)*$";
+
 
   @BeforeEach
   public void steUp() throws Exception {
@@ -27,12 +36,17 @@ public class PersonTest {
     person1 = new Person("Johnny", "Appleseed", "555 AppleTree Road",
         "Bonita Springs", "FL", "33908", "(239) 999-9999");
 
+    numberPattern = Pattern.compile(NUM_REGEX);
+    phoneNumberPattern = Pattern.compile(PHONE_REGEX);
+    namePattern = Pattern.compile(NAME_REGEX);
   }
 
   @AfterEach
   public void teardown() throws Exception {
     // Set all fields to null after each test
     person1 = null;
+    numberPattern = null;
+    phoneNumberPattern = null;
   }
 
   /**
@@ -40,6 +54,8 @@ public class PersonTest {
    */
   @Test
   public void testGetFirstName() throws Exception {
+    // Validate the input to make sure that the name is actually a name
+    Assert.assertTrue(namePattern.matcher(person1.getFirstName()).matches());
     // Test to see if the correct first name is returned
     Assert.assertEquals("Johnny", person1.getFirstName());
 
@@ -62,6 +78,8 @@ public class PersonTest {
    */
   @Test
   public void testGetLastName() throws Exception {
+    // Validate the input to make sure that the name is actually a name
+    Assert.assertTrue(namePattern.matcher(person1.getLastName()).matches());
     // Test to see if the correct last name is returned
     Assert.assertEquals("Appleseed", person1.getLastName());
 
@@ -93,6 +111,8 @@ public class PersonTest {
    */
   @Test
   public void testGetCity() throws Exception {
+    // Validate the input to make sure that the city is actually a city
+    Assert.assertTrue(namePattern.matcher(person1.getFirstName()).matches());
     // Test to ensure that correct city is returned from a person object
     Assert.assertEquals("Bonita Springs", person1.getCity());
 
@@ -113,6 +133,8 @@ public class PersonTest {
    */
   @Test
   public void testGetZip() throws Exception {
+    // Check to make sure that the Zip code only consist of numbers.
+    Assert.assertTrue(numberPattern.matcher(person1.getZip()).matches());
     // Test to ensure that correct zip code is returned from a person object
     Assert.assertEquals("33908", person1.getZip());
 
@@ -123,9 +145,11 @@ public class PersonTest {
    */
   @Test
   public void testGetPhone() throws Exception {
+    // Check to make sure that the phone number only contains numbers and the
+    // parentheses with the area code between them.
+    Assert.assertTrue(phoneNumberPattern.matcher(person1.getPhone()).matches());
     // Test to ensure that correct phone number is returned from a person object
     Assert.assertEquals("(239) 999-9999", person1.getPhone());
-
   }
 
   /**
