@@ -27,7 +27,7 @@ public class FileSystemTest {
     fileSystem = new FileSystem();
 
     testPerson = new Person("Test", "Test", "Test", "Test",
-        "FL", "33976", "(239)-999-9999");
+        "FL", "33976", "(239) 999-9999");
     addressBook = new AddressBook();
     //addressBook.add(person);
     testFile = new File("$TEST");
@@ -73,7 +73,7 @@ public class FileSystemTest {
   public void testSaveFile() throws Exception {
 
     Person testPerson2 = new Person("Stacy", "Campbell",
-        "347 Eagle Drive", "Miami", "FL", "33301", "(305)-999-9999");
+        "347 Eagle Drive", "Miami", "FL", "33301", "(305) 999-9999");
 
     addressBook.add(testPerson);
     addressBook.add(testPerson2);

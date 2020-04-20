@@ -31,9 +31,9 @@ class AddressBookControllerTest {
         "Bonita Springs", "FL", "33908", "(239) 999-9999");
 
     dbPerson1 = new Person("Test", "Test", "Test", "Test",
-        "FL", "33976", "(239)-999-9999");
+        "FL", "33976", "(239) 999-9999");
     dbPerson2 = new Person("Stacy", "Campbell",
-        "347 Eagle Drive", "Miami", "FL", "33301", "(305)-999-9999");
+        "347 Eagle Drive", "Miami", "FL", "33301", "(305) 999-9999");
 
     addressBook = new AddressBook();
     addressBook.add(person);

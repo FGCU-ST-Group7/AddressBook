@@ -49,6 +49,34 @@ public class PersonTest {
     phoneNumberPattern = null;
   }
 
+  @ParameterizedTest
+  @MethodSource("personGenerator")
+  public void createPerson(String firstName, String lastName, String address, String city, String state, String zipCode, String phoneNumber){
+    Assert.assertThrows(IllegalArgumentException.class, () -> {
+      Person person = new Person(firstName, lastName, address, city, state, zipCode, phoneNumber);
+    });
+  }
+
+  static Stream<Arguments> personGenerator(){
+    return Stream.of(
+        Arguments.arguments("Michael", "Jordan", "23 United Center", "Chicago", "IL", "23232", "(239) 999-9999"),
+        Arguments.arguments("", "Jordan", "23 United Center", "Chicago", "IL", "23232", "(239) 999-9999"),
+        Arguments.arguments("23", "Jordan", "23 United Center", "Chicago", "IL", "23232", "(239) 999-9999"),
+        Arguments.arguments("Michael", "23", "23 United Center", "Chicago", "IL", "23232", "(239) 999-9999"),
+        Arguments.arguments("Michael", "", "23 United Center", "Chicago", "IL", "23232", "(239) 999-9999"),
+        Arguments.arguments("Michael", "Jordan", "23", "Chicago", "IL", "23232", "(239) 999-9999"),
+        Arguments.arguments("Michael", "Jordan", "", "Chicago", "IL", "23232", "(239) 999-9999"),
+        Arguments.arguments("Michael", "Jordan", "23 United Center", "23", "IL", "23232", "(239) 999-9999"),
+        Arguments.arguments("Michael", "Jordan", "23 United Center", "", "IL", "23232", "(239) 999-9999"),
+        Arguments.arguments("Michael", "Jordan", "23 United Center", "Chicago", "23", "23232", "(239) 999-9999"),
+        Arguments.arguments("Michael", "Jordan", "23 United Center", "Chicago", "", "23232", "(239) 999-9999"),
+        Arguments.arguments("Michael", "Jordan", "23 United Center", "Chicago", "IL", "Air Jordan", "(239) 999-9999"),
+        Arguments.arguments("Michael", "Jordan", "23 United Center", "Chicago", "IL", "", "(239) 999-9999"),
+        Arguments.arguments("Michael", "Jordan", "23 United Center", "Chicago", "IL", "23232", "(239)-999-MIKE"),
+        Arguments.arguments("Michael", "Jordan", "23 United Center", "Chicago", "IL", "", "")
+        );
+  }
+
   /**
    * Method: getFirstName()
    */
