@@ -4,45 +4,89 @@ import java.io.FileNotFoundException;
 import java.sql.SQLException;
 
 /**
- * Created by 
+ * AddressController is used by the GUI in order to manipulate the data within the address book
+ * which involve Person objects.
  */
 public class AddressBookController {
-    private AddressBook addressBook;
 
-    public AddressBookController(AddressBook addressBook) {
-        this.addressBook = addressBook;
-    }
+  // AddressBookController will have an addressBook
+  private AddressBook addressBook;
 
-    public void add(Person p) {
-        addressBook.add(p);
-    }
+  // Default constructor that stores the address book that is passed in during initialization
+  public AddressBookController(AddressBook addressBook) {
+    this.addressBook = addressBook;
+  }
 
-    public void set(int index, Person person) {
-        addressBook.set(index, person);
-    }
+  /***
+   * Add function used to store a person object within an addressBook.
+   * @param p - Person.
+   */
+  public void add(Person p) {
+    addressBook.add(p);
+  }
 
-    public void remove(int index) {
-        addressBook.remove(index);
-    }
+  /***
+   * Set function is used to store a person in a specific spot within the address book.
+   * It calls the function remove() in the addressBook object to do so.
+   *
+   * @param index - is the destination of where the person object will be stored.
+   * @param person - person object that will be stored in that position.
+   */
+  public void set(int index, Person person) {
+    addressBook.set(index, person);
+  }
 
-    public Person get(int index) {
-        return addressBook.get(index);
-    }
+  /***
+   * Remove function used to remove a person object from within an addressBook.
+   * It calls the function remove() in the addressBook object to do so.
+   * @param index - position of person to be removed.
+   */
+  public void remove(int index) {
+    addressBook.remove(index);
+  }
 
-    public void clear() {
-        addressBook.clear();
-    }
+  /***
+   * Get function used to get a person object from within an addressBook.
+   * It calls the function get() in the addressBook object to do so.
+   *
+   * @param index - position of person to get.
+   */
+  public Person get(int index) {
+    return addressBook.get(index);
+  }
 
-    public void open(File file) throws FileNotFoundException, SQLException {
-        new FileSystem().readFile(addressBook, file);
-        addressBook.fireTableDataChanged();
-    }
+  /***
+   * Method used to clear all objects from within an address book.
+   * It calls the function clear() in the addressBook object to do so.
+   */
+  public void clear() {
+    addressBook.clear();
+  }
 
-    public void save(File file) throws SQLException {
-        new FileSystem().saveFile(addressBook, file);
-    }
+  /***
+   *   Open method is used to open a file and read the information to store it into the addressBook.
+   *
+   * @param file - the file path where the database is located.
+   */
+  public void open(File file) throws FileNotFoundException, SQLException {
+    new FileSystem().readFile(addressBook, file);
+    addressBook.fireTableDataChanged();
+  }
 
-    public AddressBook getModel() {
-        return addressBook;
-    }
+  /***
+   *   Save method is used to save the contents within the addressBook into the database.
+   *
+   *
+   * @param file - the file path where the database is located.
+   */
+  public void save(File file) throws SQLException {
+    new FileSystem().saveFile(addressBook, file);
+  }
+
+  /***
+   * Method used to return the addressBook.
+   */
+  public AddressBook getModel() {
+    return addressBook;
+  }
 }

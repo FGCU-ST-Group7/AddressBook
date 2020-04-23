@@ -3,16 +3,26 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.sql.*;
 
-
+/***
+ * FileSystem class is used to read from an an SQL database through JDBC.
+ * THe FileSystem also can store people into the database.
+ */
 public class FileSystem {
 
+  /**
+   * readFile function uses jdbc to load an AddressBook with data from a database file.
+   *
+   */
   public void readFile(AddressBook addressBook, File file)
       throws SQLException, FileNotFoundException {
+    // Check if the file exists or if it can be read
     if (!file.exists() || !file.canRead()) {
       throw new FileNotFoundException();
     }
 
+    // establish a connection object that uses jdbc
     Connection connection = DriverManager.getConnection("jdbc:sqlite:" + file.getAbsolutePath());
+    // Execute a query that will select the columns of the Person table
     ResultSet rs = connection.createStatement()
         .executeQuery("SELECT lastName, firstName, address, city, state, zip, phone FROM persons");
     // Clear the current AddressBook contents
@@ -34,9 +44,14 @@ public class FileSystem {
   }
 
 
+  /**
+   * Method is used to store all the information in an address book into the database.
+   */
   public void saveFile(AddressBook addressBook, File file) throws SQLException {
-    // Create the table structure
+    // establish a connection object that uses jdbc
     Connection connection = DriverManager.getConnection("jdbc:sqlite:" + file.getAbsolutePath());
+
+    // Create a statement object to establish a query that will be executed.
     Statement statement = connection.createStatement();
     statement.execute("DROP TABLE IF EXISTS persons");
     statement.execute(
